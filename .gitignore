@@ -5,3 +5,7 @@
 
 bin/
 gen/
+
+libs/.DS_Store
+
+.DS_Store
