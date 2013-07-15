@@ -21,6 +21,11 @@ public class JotformAPIClient {
 		client = new AsyncHttpClient();
 		this.apiKey = apiKey;
 	}
+	
+	public JotformAPIClient() {
+		client = new AsyncHttpClient();
+		this.apiKey = "";
+	}
 
 	public void get(String url, RequestParams params,
 			AsyncHttpResponseHandler responseHandler) {
@@ -32,6 +37,17 @@ public class JotformAPIClient {
 	public void post(String url, RequestParams params,
 			AsyncHttpResponseHandler responseHandler) {
 		client.post(getAbsoluteUrl(url), params, responseHandler);
+	}
+	
+	public void getApiKey(String username, String password, AsyncHttpResponseHandler responseHandler){
+		
+		RequestParams params = new RequestParams();
+		
+		params.put("username", username);
+		params.put("password", password);
+		params.put("appName", "Android");
+		
+		get("login", params, responseHandler);
 	}
 
 	public void getUser(AsyncHttpResponseHandler responseHandler) {
