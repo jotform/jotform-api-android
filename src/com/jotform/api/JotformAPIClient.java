@@ -47,7 +47,7 @@ public class JotformAPIClient {
 		params.put("password", password);
 		params.put("appName", "Android");
 		
-		get("login", params, responseHandler);
+		post("login", params, responseHandler);
 	}
 
 	public void getUser(AsyncHttpResponseHandler responseHandler) {
