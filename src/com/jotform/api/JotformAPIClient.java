@@ -16,6 +16,8 @@ public class JotformAPIClient {
 	private static final String BASE_URL = "http://api.jotform.com/";
 	private AsyncHttpClient client;
 	private String apiKey;
+	
+	public static final String TAG = "Jotform API Client";
 
 	public JotformAPIClient(String apiKey) {
 		client = new AsyncHttpClient();
@@ -46,6 +48,7 @@ public class JotformAPIClient {
 		params.put("username", username);
 		params.put("password", password);
 		params.put("appName", "Android");
+		params.put("access", "full");
 		
 		post("login", params, responseHandler);
 	}
@@ -115,6 +118,9 @@ public class JotformAPIClient {
 
 			params.put("filter", filter.toString());
 		}
+		
+		Log.d(TAG, "url :" + "user/submissions");
+		Log.d(TAG, "params : " + params.toString());
 		
 		get("user/submissions", params, responseHandler);
 	}
