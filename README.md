@@ -7,10 +7,19 @@ Installation
 - Right click on you own android project (the one that you want to use the library with) and click properties.
 - Click "Android" tab and add "jotform-api-android" project using the Add button in the Library section.
 
+Authentication
+------------
+
+JotForm API requires API key for all user related calls. You can create your API Keys at API section of My Account page.
+
 Sample Usage
 ------------
 
 Once you successfully added the library as a dependency to your project, you can use it in your Application as follows;
+
+Examples
+
+Print all forms of the user
 
     package com.example;
     
@@ -33,7 +42,39 @@ Once you successfully added the library as a dependency to your project, you can
             // there is no use case we can site that includes hardcoding an api key ;)
             apiClient = new JotformAPIClient("API_KEY_GOES_HERE");
             
-            apiClient.getSubmissions(null, null, new JsonHttpHandler(){
+            apiClient.getForms(new JsonHttpHandler(){
+            
+                @Override
+    		    public void onSuccess(JSONObject formsResponse){
+    			    try {
+    				    forms = formsResponse.getJSONArray("content");
+                        
+                        // do something with the forms jsonArray;
+                        
+                    } catch (JSONException e){
+    				    // fail
+    			    }
+                    
+                }
+            });
+        }
+    }
+    
+Get latest 100 submissions ordered by creation date
+
+		public class MyActivity extends Avtivity{
+        
+        private JotformAPIClient apiClient;
+        
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+  	    super.onCreate(savedInstanceState);
+            
+            // this is for demonstration purposes only
+            // there is no use case we can site that includes hardcoding an api key ;)
+            apiClient = new JotformAPIClient("API_KEY_GOES_HERE");
+            
+            apiClient.getSubmissions(100, null, new JsonHttpHandler(){
             
                 @Override
     		    public void onSuccess(JSONObject submissionsResponse){
@@ -50,4 +91,3 @@ Once you successfully added the library as a dependency to your project, you can
             });
         }
     }
-    
