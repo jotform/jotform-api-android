@@ -1,6 +1,8 @@
 package com.jotform.api;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,71 +18,88 @@ public class JotformAPIClient {
 	private static final String BASE_URL = "http://api.jotform.com/";
 	private AsyncHttpClient client;
 	private String apiKey;
-	
+
 	public static final String TAG = "Jotform API Client";
 
 	public JotformAPIClient(String apiKey) {
 		client = new AsyncHttpClient();
 		this.apiKey = apiKey;
 	}
-	
+
 	public JotformAPIClient() {
 		client = new AsyncHttpClient();
 		this.apiKey = "";
 	}
 
-	public void get(String url, RequestParams params,
-			AsyncHttpResponseHandler responseHandler) {
+	public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 
 		client.addHeader("apiKey", apiKey);
 		client.get(getAbsoluteUrl(url), params, responseHandler);
 	}
 
-	public void post(String url, RequestParams params,
-			AsyncHttpResponseHandler responseHandler) {
+	public void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		
 		client.post(getAbsoluteUrl(url), params, responseHandler);
 	}
 	
+	public void delete(String url, AsyncHttpResponseHandler responseHandler) {
+		
+		client.delete(url, responseHandler);
+	}
+	
+	public void put(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		
+		client.put(url, params, responseHandler);
+	}
+
+	private String getAbsoluteUrl(String relativeUrl) {
+		
+		return BASE_URL + relativeUrl;
+	}
+	
+	private RequestParams createHistoryQuery(String action, String date, String sortBy, String startDate, String endDate) {
+		
+    	RequestParams args = new RequestParams();
+    	args.put("action", action);
+    	args.put("date", date);
+    	args.put("sortBy", sortBy);
+    	args.put("startDate", startDate);
+    	args.put("endDate", endDate);
+    	
+    	return args;
+    }
+
 	public void getApiKey(String username, String password, AsyncHttpResponseHandler responseHandler){
-		
+
 		RequestParams params = new RequestParams();
-		
+
 		params.put("username", username);
 		params.put("password", password);
 		params.put("appName", "Android");
 		params.put("access", "full");
-		
+
 		post("login", params, responseHandler);
 	}
 
-	public void getUser(AsyncHttpResponseHandler responseHandler) {
-		get("user", null, responseHandler);
-	}
 
 	public void getForms(AsyncHttpResponseHandler responseHandler) {
 		get("user/forms", null, responseHandler);
 	}
 
-	public void getFormQuestions(
-			long formId,
-			AsyncHttpResponseHandler responseHandler) {
-		
-		get("form/" + String.valueOf(formId) + "/questions", null, responseHandler);
-	}
 
 	public void getSubmissions(AsyncHttpResponseHandler responseHandler) {
-		
+
 		get("user/submissions", null, responseHandler);
 	}
-	
+
 	public void getSubmissions(
 			Integer limit,
 			String orderBy,
 			JSONObject filter,
 			AsyncHttpResponseHandler responseHandler){
-		
+
 		RequestParams params = new RequestParams();
-		
+
 		if (limit != null) {
 			params.put("limit", String.valueOf(limit));
 		}
@@ -88,7 +107,7 @@ public class JotformAPIClient {
 		if (orderBy != null) {
 			params.put("order_by", orderBy);
 		}
-		
+
 		// Make sure all filter parameters and values are String formatted as :
 		// filter = {
 		// 		"id": "236344132991249332",
@@ -106,22 +125,22 @@ public class JotformAPIClient {
 			while (keys.hasNext()) {
 
 				String key = keys.next();
-				
+
 				try {
-				
+
 					filter.put(key, String.valueOf(filter.getJSONObject(key)));
-					
+
 				} catch (JSONException e) {
-					
+
 				}
 			}
 
 			params.put("filter", filter.toString());
 		}
-		
+
 		Log.d(TAG, "url :" + "user/submissions");
 		Log.d(TAG, "params : " + params.toString());
-		
+
 		get("user/submissions", params, responseHandler);
 	}
 
@@ -133,6 +152,7 @@ public class JotformAPIClient {
 				responseHandler);
 	}
 
+	
 	public void getFormSubmissions(
 			long formId,
 			Integer limit,
@@ -143,13 +163,437 @@ public class JotformAPIClient {
 		try {
 			filter.put("form_id", formId);
 		} catch (JSONException e) {
-			
+
 		}
-		
+
 		getSubmissions(limit, orderBy, filter, responseHandler);
 	}
 
-	private String getAbsoluteUrl(String relativeUrl) {
-		return BASE_URL + relativeUrl;
+	/**
+     * Get user account details for a JotForm user.
+     * @return Returns user account type, avatar URL, name, email, website URL and account limits.
+     */
+	public void getUser(AsyncHttpResponseHandler responseHandler) {
+		get("user", null, responseHandler);
 	}
+	
+	/**
+     * Get number of form submissions received this month.
+     * @return Returns number of submissions, number of SSL form submissions, payment form submissions and upload space used by user.
+     */
+    public void getUsage(AsyncHttpResponseHandler responseHandler) {
+        get("user/usage", null, responseHandler);
+    }
+    
+	/**
+     * Get a list of sub users for this account.
+     * @return Returns list of forms and form folders with access privileges.
+     */
+    public void getSubUsers(AsyncHttpResponseHandler responseHandler) {
+        get("user/subusers", null, responseHandler);
+    }
+    
+	/**
+     * Get a list of form folders for this account.
+     * @return Returns name of the folder and owner of the folder for shared folders.
+     */
+	public void getFolders(AsyncHttpResponseHandler responseHandler) {
+		
+		get("user/folders", null, responseHandler);
+	}
+	
+	/**
+     * List of URLS for reports in this account.
+     * @return Returns reports for all of the forms. ie. Excel, CSV, printable charts, embeddable HTML tables.
+     */
+	public void getReports(AsyncHttpResponseHandler responseHandler) {
+		
+		get("user/reports", null, responseHandler);
+	}
+	
+	/**
+     * Get user's settings for this account.
+     * @return Returns user's time zone and language.
+     */
+	public void getSettings(AsyncHttpResponseHandler responseHandler) {
+		
+		get("user/settings", null, responseHandler);
+	}
+	
+	/**
+     * Get user activity log.
+     * @return Returns activity log about things like forms created/modified/deleted, account logins and other operations.
+     */
+	public void getHistory(AsyncHttpResponseHandler responseHandler) {
+		
+		get("user/history", null, responseHandler);
+	}
+	
+	/**
+     * Get user activity log.
+     * @param action Filter results by activity performed. Default is 'all'.
+     * @param date Limit results by a date range. If you'd like to limit results by specific dates you can use startDate and endDate fields instead.
+     * @param sortBy Lists results by ascending and descending order.
+     * @param startDate Limit results to only after a specific date. Format: MM/DD/YYYY.
+     * @param endDate Limit results to only before a specific date. Format: MM/DD/YYYY.
+     * @return Returns activity log about things like forms created/modified/deleted, account logins and other operations.
+     */
+	public void getHistory(String action, String date, String sortBy, String startDate, String endDate, AsyncHttpResponseHandler responseHandler) {
+		
+		RequestParams params = this.createHistoryQuery(action, date, sortBy, startDate, endDate);
+		
+    	get("user/history", params, responseHandler);
+    }
+	
+	/**
+     * Get basic information about a form.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns form ID, status, update and creation dates, submission count etc.
+     */
+	public void getForm(long formId, AsyncHttpResponseHandler responseHandler) {
+		
+		get("form/" + String.valueOf(formId), null, responseHandler);
+	}
+	
+	/**
+     * Get a list of all questions on a form.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns question properties of a form.
+     */
+	public void getFormQuestions(long formId, AsyncHttpResponseHandler responseHandler) {
+
+		get("form/" + String.valueOf(formId) + "/questions", null, responseHandler);
+	}	
+		
+	/**
+     * Get details about a question
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param qid Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.
+     * @return Returns question properties like required and validation.
+     */
+	public void getFormQuestion(long formId, long qid, AsyncHttpResponseHandler responseHandler) {
+		
+        get("form/" + String.valueOf(formId) + "/question/" + qid, null, responseHandler);
+    }
+	
+	/**
+     * Submit data to this form using the API.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param submission Submission data with question IDs.
+     * @return Returns posted submission ID and URL.
+     */
+    public void createFormSubmissions(long formId, HashMap<String, String> submission, AsyncHttpResponseHandler responseHandler) {
+    	
+    	RequestParams parameters = new RequestParams();
+    	
+    	Set<String> keys = submission.keySet();
+    	
+    	for(String key: keys) {
+    		if (key.contains("_")) {
+    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][" + key.substring(key.indexOf("_") + 1) + "]", submission.get(key));
+    		} else {
+    			parameters.put("submission[" + key + "]", submission.get(key));
+    		}
+    	}
+    	
+    	post("form/" + String.valueOf(formId), parameters, responseHandler);
+    }
+    
+    /**
+     * List of files uploaded on a form.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns uploaded file information and URLs on a specific form.
+     */
+    public void getFormFiles(long formId, AsyncHttpResponseHandler responseHandler) {
+    	
+         get("form/" + String.valueOf(formId) + "/files", null, responseHandler);
+    }
+    
+    /**
+     * Get list of webhooks for a form
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns list of webhooks for a specific form.
+     */
+    public void getFormWebhooks(long formId, AsyncHttpResponseHandler responseHandler) {
+    	
+        get("form/" + String.valueOf(formId) + "/webhooks", null, responseHandler);
+    }
+    
+    /**
+     * Add a new webhook
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param webhookURL Webhook URL is where form data will be posted when form is submitted.
+     * @return Returns list of webhooks for a specific form.
+     */
+    public void createFormWebhook(long formId, String webhookURL, AsyncHttpResponseHandler responseHandler) {
+    	
+    	RequestParams params = new RequestParams();
+    	params.put("webhookURL", webhookURL);
+    	
+    	post("form/" + String.valueOf(formId) + "/webhooks", params, responseHandler);
+    }
+    
+    /**
+     * Get submission data
+     * @param sid You can get submission IDs when you call /form/{id}/submissions.
+     * @return Returns information and answers of a specific submission.
+     */
+    public void getSubmission(long sid, AsyncHttpResponseHandler responseHandler) {
+    	
+        get("submission/" + String.valueOf(sid), null, responseHandler);
+    }
+    
+    /**
+     * Get report details
+     * @param reportID You can get a list of reports from /user/reports.
+     * @return Returns properties of a specific report like fields and status.
+     */
+    public void getReport(long reportId, AsyncHttpResponseHandler responseHandler) {
+        get("report/" + String.valueOf(reportId), null, responseHandler);
+    }
+    
+    /**
+     * Get folder details
+     * @param folderId You can get a list of folders from /user/folders.
+     * @return Returns a list of forms in a folder, and other details about the form such as folder color.
+     */
+    public void getFolder(long folderId, AsyncHttpResponseHandler responseHandler) {
+    	
+        get("folder/" + String.valueOf(folderId), null, responseHandler);
+    }
+    
+    /**
+     * Get a list of all properties on a form.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns form properties like width, expiration date, style etc.
+     */
+    public void getFormProperties(long formId, AsyncHttpResponseHandler responseHandler) {
+    	
+        get("form/" + String.valueOf(formId) + "/properties", null, responseHandler);
+    }
+    
+    /**
+     * Get a specific property of the form.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param propertyKey You can get property keys when you call /form/{id}/properties.
+     * @return Returns given property key value.
+     */
+    public void getFormProperty(long formId, String propertyKey, AsyncHttpResponseHandler responseHandler ) {
+    	
+        get("form/" + String.valueOf(formId) + "/properties/" + propertyKey, null, responseHandler);
+    }
+    
+    /**
+     * Delete a single submission.
+     * @param sid You can get submission IDs when you call /user/submissions.
+     * @return Returns status of request.
+     */
+    public void deleteSubmission(long sid, AsyncHttpResponseHandler responseHandler) {
+
+    	delete("submission/" + String.valueOf(sid), responseHandler);
+    }
+    
+    /**
+     * Edit a single submission.
+     * @param sid You can get submission IDs when you call /form/{id}/submissions.
+     * @param submission New submission data with question IDs.
+     * @return Returns status of request.
+     */
+    public void editSubmission(long sid, HashMap<String, String> submission, AsyncHttpResponseHandler responseHandler) {
+    	
+    	RequestParams parameters = new RequestParams();
+    	
+    	Set<String> keys = submission.keySet();
+    	
+    	for(String key: keys) {
+    		if (key.contains("_")) {
+    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][" + key.substring(key.indexOf("_") + 1) + "]", submission.get(key));
+    		} else {
+    			parameters.put("submission[" + key + "]", submission.get(key));
+    		}
+    	}
+    	
+        post("submission/" + String.valueOf(sid), parameters, responseHandler);
+    }
+    
+    /**
+     * Clone a single form.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns status of request.
+     */
+    public void cloneForm(long formId, AsyncHttpResponseHandler responseHandler) {
+    	
+        post("form/" + String.valueOf(formId) + "/clone", null, responseHandler);
+    }
+    
+    /**
+     * Delete a single form question.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param qid Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.
+     * @return Returns status of request.
+     */
+    public void deleteFormQuestion(long formId, long qid, AsyncHttpResponseHandler responseHandler) {
+    	
+        delete("form/" + String.valueOf(formId) + "/question/" + qid, responseHandler);
+    }
+    
+    /**
+     * Add new question to specified form.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param question New question properties like type and text.
+     * @return Returns properties of new question.
+     */
+    public void createFormQuestion(long formId, HashMap<String, String> question, AsyncHttpResponseHandler responseHandler) {
+    	
+    	RequestParams params = new RequestParams();
+    	
+    	Set<String> keys = question.keySet();
+    	
+    	for(String key: keys) {
+    		params.put("question[" + key + "]", question.get(key));
+    	}
+    	
+        post("form/" + String.valueOf(formId) + "/questions", params, responseHandler);
+    }
+    
+    /**
+     *  Add new questions to specified form.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param questions New question properties like type and text.
+     * @return Returns properties of new questions.
+     */
+    public void createFormQuestions(long formId, JSONObject questions, AsyncHttpResponseHandler responseHandler) {
+    	
+    	RequestParams params = new RequestParams();
+    	
+    	if ( questions != null ) {
+
+			Iterator<String> keys = questions.keys();
+			
+			while (keys.hasNext()) {
+
+				String key = keys.next();
+
+				try {
+
+					params.put(key, String.valueOf(questions.getJSONObject(key)));
+
+				} catch (JSONException e) {
+
+				}
+			}
+		}
+    	
+        put("form/" + String.valueOf(formId) + "/questions", params, responseHandler);
+    }
+    
+    /**
+     * Edit a single question properties.
+     * @param formId Form ID is the numbers you sonee on a form URL. You can get form IDs when you call /user/forms.
+     * @param qid Identifier for each question  a form. You can get a list of question IDs from /form/{id}/questions.
+     * @param questionProperties New question properties like text and order.
+     * @return Returns edited property and type of question.
+     */
+    public void editFormQuestion(long formId, long qid, HashMap<String, String> questionProperties, AsyncHttpResponseHandler responseHandler) {
+    	
+    	RequestParams question = new RequestParams();
+    	
+    	Set<String> keys = questionProperties.keySet();
+    	
+    	for(String key: keys) {
+    		question.put("question[" + key + "]", questionProperties.get(key));
+    	}
+    	
+        post("form/" + String.valueOf(formId) + "/question/" + qid, question, responseHandler);
+    }
+    
+    /**
+     * Add or edit properties of a specific form
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param formProperties New properties like label width.
+     * @return Returns edited properties.
+     */
+    public void setFormProperties(long formId, HashMap<String, String> formProperties, AsyncHttpResponseHandler responseHandler) {
+    	
+    	RequestParams properties = new RequestParams();
+    	
+    	Set<String> keys = formProperties.keySet();
+    	
+    	for(String key: keys) {
+    		properties.put("properties[" + key + "]", formProperties.get(key));
+    	}
+    	
+        post("form/" + String.valueOf(formId) + "/properties", properties, responseHandler);
+    }
+    
+    /**
+     * Add or edit properties of a specific form
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param formProperties New properties like label width.
+     * @return Returns edited properties.
+     */
+    public void setMultipleFormProperties(long formId, JSONObject formProperties, AsyncHttpResponseHandler responseHandler) {
+    	
+    	RequestParams properties = new RequestParams();
+    	
+    	if ( formProperties != null ) {
+
+			Iterator<String> keys = formProperties.keys();
+			while ( keys.hasNext() ) {
+
+				String key = keys.next();
+
+				try {
+
+					properties.put(key, String.valueOf(formProperties.getJSONObject(key)));
+
+				} catch (JSONException e) {
+
+				}
+			}
+		}
+    	
+    	put("form/" + String.valueOf(formId) + "/properties", properties, responseHandler);
+    	
+    }
+    
+    /**
+     * Create a new form
+     * @param form Questions, properties and emails of new form.
+     * @return Returns new form.
+     */
+    public void createForm(JSONObject form, AsyncHttpResponseHandler responseHandler) {
+    	
+    	RequestParams properties = new RequestParams();
+    	
+    	if ( form != null ) {
+
+			Iterator<String> keys = form.keys();
+			
+			while ( keys.hasNext() ) {
+
+				String key = keys.next();
+
+				try {
+
+					properties.put(key, String.valueOf(form.getJSONObject(key)));
+
+				} catch (JSONException e) {
+
+				}
+			}
+		}
+    	
+    	put("user/forms", properties, responseHandler);
+    }
+    
+    /**
+     * Delete a single form
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Properties of deleted form.
+     */
+    public void deleteForm(long formId, AsyncHttpResponseHandler responseHandler) {
+    	
+    	delete("form/" + formId, responseHandler);
+    }
 }
