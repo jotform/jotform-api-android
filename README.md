@@ -39,7 +39,7 @@ Print all forms of the user
   	    super.onCreate(savedInstanceState);
             
             // this is for demonstration purposes only
-            // there is no use case we can site that includes hardcoding an api key ;)
+            // you should not harcode API Keys, it is different for each user
             apiClient = new JotformAPIClient("API_KEY_GOES_HERE");
             
             apiClient.getForms(new JsonHttpHandler(){
