@@ -532,26 +532,29 @@ public class JotformAPIClient {
      * @param formProperties New properties like label width.
      * @return Returns edited properties.
      */
-    public void setMultipleFormProperties(long formId, JSONObject formProperties, AsyncHttpResponseHandler responseHandler) {
+    public void setMultipleFormProperties(long formId, HashMap<String, String> map, AsyncHttpResponseHandler responseHandler) {
     	
-    	RequestParams properties = new RequestParams();
+    	RequestParams properties = new RequestParams(map);
     	
+    	/*
     	if ( formProperties != null ) {
 
 			Iterator<String> keys = formProperties.keys();
+			
 			while ( keys.hasNext() ) {
 
 				String key = keys.next();
 
 				try {
 
-					properties.put(key, String.valueOf(formProperties.getJSONObject(key)));
+					properties.put(key, formProperties.getString(key));
 
 				} catch (JSONException e) {
 
 				}
 			}
 		}
+		*/
     	
     	put("form/" + String.valueOf(formId) + "/properties", properties, responseHandler);
     	
@@ -575,14 +578,18 @@ public class JotformAPIClient {
 				String key = keys.next();
 
 				try {
+					
+					Log.d("value = ", form.getJSONObject(key).toString());
 
-					properties.put(key, String.valueOf(form.getJSONObject(key)));
+					properties.put(key, form.getJSONObject(key).toString());
 
 				} catch (JSONException e) {
 
 				}
 			}
 		}
+    	
+    	String proStr = properties.toString();
     	
     	put("user/forms", properties, responseHandler);
     }
