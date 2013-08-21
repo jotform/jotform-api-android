@@ -377,16 +377,6 @@ public class JotformAPIClient {
 	}
 
 	/**
-	 * Get folder details
-	 * @param folderId You can get a list of folders from /user/folders.
-	 * @return Returns a list of forms in a folder, and other details about the form such as folder color.
-	 */
-	public void getFolder(long folderId, AsyncHttpResponseHandler responseHandler) {
-
-		get("folder/" + String.valueOf(folderId), null, responseHandler);
-	}
-
-	/**
 	 * Get a list of all properties on a form.
 	 * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
 	 * @return Returns form properties like width, expiration date, style etc.
@@ -458,7 +448,7 @@ public class JotformAPIClient {
 	 */
 	public void deleteFormQuestion(long formId, long qid, AsyncHttpResponseHandler responseHandler) {
 
-		delete("form/" + String.valueOf(formId) + "/question/" + qid, responseHandler);
+		delete("form/" + String.valueOf(formId) + "/question/" + String.valueOf(qid), responseHandler);
 	}
 
 	/**
