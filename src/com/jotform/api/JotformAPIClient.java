@@ -245,6 +245,16 @@ public class JotformAPIClient {
 	}
 
 	/**
+     * Update user's settings
+     * @param settings New user setting values with setting keys
+     * @return Returns changes on user settings.
+     */
+    public void updateSettings(HashMap<String, String> settings, AsyncHttpResponseHandler responseHandler) {
+    	
+    	post("user/settings", null, responseHandler);
+    }
+    
+	/**
 	 * Get user activity log.
 	 * @return Returns activity log about things like forms created/modified/deleted, account logins and other operations.
 	 */
@@ -287,7 +297,7 @@ public class JotformAPIClient {
 	public void getFormQuestions(long formId, AsyncHttpResponseHandler responseHandler) {
 
 		get("form/" + String.valueOf(formId) + "/questions", null, responseHandler);
-	}	
+	}		
 
 	/**
 	 * Get details about a question
@@ -357,6 +367,18 @@ public class JotformAPIClient {
 		post("form/" + String.valueOf(formId) + "/webhooks", params, responseHandler);
 	}
 
+    /**
+     * Delete a specific webhook of a form.
+     * @param formId Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param webhookID You can get webhook IDs when you call /form/{formID}/webhooks.
+     * @return Returns remaining webhook URLs of form.
+     */
+    public void deleteFormWebhook(long formId, long webhookId, AsyncHttpResponseHandler responseHandler) {
+    	
+    	delete("form/" + String.valueOf(formId) + "/webhooks/" + String.valueOf(webhookId), responseHandler);
+    }
+    
+	
 	/**
 	 * Get submission data
 	 * @param sid You can get submission IDs when you call /form/{id}/submissions.
@@ -571,6 +593,7 @@ public class JotformAPIClient {
 		}
 			
 	}
+
 
 	/**
 	 * Delete a single form
