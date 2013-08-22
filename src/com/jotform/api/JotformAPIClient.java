@@ -251,7 +251,15 @@ public class JotformAPIClient {
      */
     public void updateSettings(HashMap<String, String> settings, AsyncHttpResponseHandler responseHandler) {
     	
-    	post("user/settings", null, responseHandler);
+    	RequestParams params = new RequestParams();
+
+		Set<String> keys = settings.keySet();
+		
+		for(String key: keys) {
+			params.put(key, settings.get(key));
+		}
+    	
+    	post("user/settings", params, responseHandler);
     }
     
 	/**
