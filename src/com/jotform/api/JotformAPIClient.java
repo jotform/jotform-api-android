@@ -225,7 +225,17 @@ public class JotformAPIClient {
 
 		get("user/folders", null, responseHandler);
 	}
-
+	
+	/**
+     * Get folder details
+     * @param folderID You can get a list of folders from /user/folders.
+     * @return Returns a list of forms in a folder, and other details about the form such as folder color.
+     */
+	public void getFolder(long folderId, AsyncHttpResponseHandler responseHandler) {
+		
+		get("folder/" + String.valueOf(folderId), null, responseHandler);
+	}
+	
 	/**
 	 * List of URLS for reports in this account.
 	 * @return Returns reports for all of the forms. ie. Excel, CSV, printable charts, embeddable HTML tables.
