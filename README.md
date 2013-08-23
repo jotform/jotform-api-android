@@ -154,11 +154,10 @@ Delete Submission example
     		    public void onSuccess(JSONObject submissionsResponse){
     		    
     			    try {
-    				    submissions = submissionsResponse.getJSONArray("content");
                         
                         // do something with the submissions jsonArray;
                         
-                    } catch (JSONException e){
+							} catch (JSONException e){
     				    // fail
     			    }
                     
