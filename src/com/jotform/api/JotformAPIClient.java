@@ -92,19 +92,43 @@ public class JotformAPIClient {
 
 		return args;
 	}
-
-	public void getApiKey(String username, String password, AsyncHttpResponseHandler responseHandler){
+		
+	/**
+	 * Login user with given credentials
+	 * @param credentials Username, password, application name and access type of user
+	 * @return Returns logged in user's settings and app key
+	 */
+	public void login(HashMap<String, String> userinfo, AsyncHttpResponseHandler responseHandler){
 
 		RequestParams params = new RequestParams();
+		
+		Set<String> keys = userinfo.keySet();
+		
+		for(String key: keys) {
+			params.put(key, userinfo.get(key));
+		}
 
-		params.put("username", username);
-		params.put("password", password);
-		params.put("appName", "Android");
-		params.put("access", "full");
-
-		post("login", params, responseHandler);
+		post("user/login", params, responseHandler);
 	}
 
+    
+	/**
+	 * Register with username, password and email
+	 * @param userDetails Username, password and email to register a new user
+	 * @return Returns new user's details
+	 */
+	public void registerUser(HashMap<String, String> userDetails, AsyncHttpResponseHandler responseHandler) {
+		
+		RequestParams params = new RequestParams();
+		
+		Set<String> keys = userDetails.keySet();
+		
+		for(String key: keys) {
+			params.put(key, userDetails.get(key));
+		}
+		
+		post("user/register", params, responseHandler);
+	}
 
 	public void getForms(AsyncHttpResponseHandler responseHandler) {
 		get("user/forms", null, responseHandler);
@@ -175,7 +199,6 @@ public class JotformAPIClient {
 		get("form/" + String.valueOf(formId) + "/submissions", params,
 				responseHandler);
 	}
-
 
 	public void getFormSubmissions(
 			long formId,
@@ -622,4 +645,6 @@ public class JotformAPIClient {
 
 		delete("form/" + String.valueOf(formId), responseHandler);
 	}
+	
+	
 }
