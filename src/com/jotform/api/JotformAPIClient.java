@@ -130,6 +130,7 @@ public class JotformAPIClient {
 		post("user/register", params, responseHandler);
 	}
 
+	
 	public void getForms(AsyncHttpResponseHandler responseHandler) {
 		get("user/forms", null, responseHandler);
 	}
@@ -613,13 +614,56 @@ public class JotformAPIClient {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+     * Create a new form
+     * @param form Questions, properties and emails of new form.
+     * @return Returns new form.
+     */
+    public void createForm(Map form, AsyncHttpResponseHandler responseHandler) {
+    	
+		RequestParams params = new RequestParams();
+		
+		Set<String> formKeys = form.keySet();
+		
+		for( String formKey: formKeys ) {
+			
+			if( formKey.equals("properties") ) {
+				
+				HashMap<String, String> properties = (HashMap<String, String>) form.get(formKey);
+				Set<String> propertyKeys = properties.keySet();
+				
+				for( String propertyKey : propertyKeys)
+					params.put(formKey + "[" + propertyKey + "]", properties.get(propertyKey));
+				
+			} else {
+				
+				Map formItem = (Map) form.get(formKey);
+				Set<String> formItemKeys = formItem.keySet();
+				
+				for(String formItemKey: formItemKeys) {
+					
+					HashMap<String, String> fi = (HashMap<String, String>) formItem.get(formItemKey);
+					
+					Set<String> fiKeys = fi.keySet();
+					
+					for(String fiKey: fiKeys)
+						params.put(formKey + "[" + formItemKey + "][" + fiKey + "]", fi.get(fiKey));
+					
+				}
+			}
+			
+		}
+		
+    	post("user/forms", params, responseHandler);
+    }
 
 	/**
 	 * Create a new form
 	 * @param form Questions, properties and emails of new form.
 	 * @return Returns new form.
 	 */
-	public void createForm(Map<?, ?> form, AsyncHttpResponseHandler responseHandler) {
+	public void createForms(Map<?, ?> form, AsyncHttpResponseHandler responseHandler) {
 
 		JSONObject param;
 		
