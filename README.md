@@ -7,11 +7,6 @@ Installation
 - Right click on you own android project (the one that you want to use the library with) and click properties.
 - Click "Android" tab and add "jotform-api-android" project using the Add button in the Library section.
 
-Authentication
-------------
-
-JotForm API requires API key for all user related calls. You can create your API Keys at API section of My Account page.
-
 Sample Usage
 ------------
 
