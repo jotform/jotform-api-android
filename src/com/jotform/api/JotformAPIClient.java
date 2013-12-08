@@ -268,6 +268,26 @@ public class JotformAPIClient {
 
 		get("user/reports", null, responseHandler);
 	}
+    
+    /**
+	 * Create new report of a form with intended fields, type and title.
+	 * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+	 * @title title is report title.
+	 * @list_type You can specify report type. 'csv', 'excel', 'grid', 'table', 'rss'
+	 * @fields you can specify fields, User IP, submission date(dt) and question IDs
+	 * @return Report details and URL.
+	 */
+	
+	public void createReport(long formId, String title, String list_type, String fields, AsyncHttpResponseHandler responseHandler) {
+		
+		RequestParams params = new RequestParams();
+        
+		params.put("title", title);
+		params.put("list_type", list_type);
+		params.put("fields", fields);
+        
+		post("form/" + String.valueOf(formId) + "/reports", params, responseHandler);
+	}
 
 	/**
 	 * Get user's settings for this account.
