@@ -379,11 +379,11 @@ public class JotformAPIClient {
 	 * @return Returns posted submission ID and URL.
 	 */
 	public void createFormSubmissions(long formId, HashMap<String, String> submission, AsyncHttpResponseHandler responseHandler) {
-
+        
 		RequestParams parameters = new RequestParams();
-
+        
 		Set<String> keys = submission.keySet();
-
+        
 		for(String key: keys) {
 			if (key.contains("_")) {
 				parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][" + key.substring(key.indexOf("_") + 1) + "]", submission.get(key));
@@ -391,8 +391,8 @@ public class JotformAPIClient {
 				parameters.put("submission[" + key + "]", submission.get(key));
 			}
 		}
-
-		post("form/" + String.valueOf(formId), parameters, responseHandler);
+        
+		post("form/" + String.valueOf(formId) + "/submissions", parameters, responseHandler);
 	}
 
 	/**
