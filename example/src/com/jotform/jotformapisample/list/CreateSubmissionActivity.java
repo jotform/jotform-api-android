@@ -22,7 +22,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class CreateSubmissionActivity extends Activity {
 
-	private static final long FORM_ID = 33444839040453L;
+	private static final long FORM_ID = 0L;
 	
 	private ProgressDialog			mProgressDialog;	
 	private Context					mContext;

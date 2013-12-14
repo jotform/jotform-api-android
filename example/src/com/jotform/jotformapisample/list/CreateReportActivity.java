@@ -21,7 +21,7 @@ import com.loopj.android.http.RequestParams;
 
 public class CreateReportActivity extends Activity {
 
-	private static final long		FORM_ID = 33444839040453L;
+	private static final long		FORM_ID = 0L;
 	private Context					mContext;
 	private ProgressDialog			mProgressDialog;
 

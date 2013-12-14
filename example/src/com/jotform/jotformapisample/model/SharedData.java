@@ -8,7 +8,7 @@ import com.jotform.api.JotformAPIClient;
 
 public class SharedData extends Application {
 	
-	public static final String API_KEY = "c51943ede92f0fc7b3c1289a63f7cece";
+	public static final String API_KEY = "";
 	
 	private CommonInfo				mCommonInfo;
 	private JotformAPIClient		mApiClient;
