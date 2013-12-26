@@ -83,4 +83,106 @@ public class RegisterUserActivity extends Activity {
 
 		});
 	}
+
+	private void registerUser(String username, String email, String password) {
+		
+		// show loading dialog
+		mProgressDialog = ProgressDialog.show(this, "", "Registering user...", true, false);		
+		
+		// register user using JotformAPI client
+		SharedData sharedData = (SharedData) getApplicationContext();
+		
+		JotformAPIClient apiClient = sharedData.getJotformAPIClient();
+		
+		// create user info
+		
+		HashMap<String, String> userinfo = new HashMap<String, String>();
+		userinfo.put("username", username);
+		userinfo.put("password", password);
+		userinfo.put("email", email);
+		
+		apiClient.registerUser(userinfo, new JsonHttpResponseHandler(){
+			
+			@Override
+			public void onSuccess(JSONObject data) {
+				
+				int responseCode;
+
+				try {
+
+					// check if result is success or fail
+					responseCode = data.getInt("responseCode");
+
+					if ( responseCode == 200 || responseCode == 206 ) {
+
+						// show alert dialog for success
+						AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+						builder.setTitle("JotformAPISample");
+						builder.setCancelable(false);
+						builder.setMessage("You registered new user successfully.");
+						builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int item) {
+
+							}
+						});
+
+						AlertDialog alert = builder.create();
+						alert.show();
+
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				// dismiss loading dialog
+				mProgressDialog.dismiss();				
+			}
+			
+			@Override
+			public void onFailure(Throwable arg0, JSONObject data) {
+				
+				int responseCode;
+
+				try {
+
+					// check what the error is
+					responseCode = data.getInt("responseCode");
+
+					if ( responseCode == 401 ) {
+						
+						// show alert dialog
+						String errMsg = data.getString("message") + "\n" + "Please check if your API Key's permission is 'Read Access' or 'Full Access'. You can create form with API key for 'Full Access'.";
+						
+						AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+						builder.setTitle("JotformAPISample");
+						builder.setCancelable(false);
+						builder.setMessage(errMsg);
+						builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int item) {
+
+							}
+						});
+
+						AlertDialog alert = builder.create();
+						alert.show();
+					}
+					
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+				
+				mProgressDialog.dismiss();
+			}
+			
+			@Override
+			public void onFinish() {
+				
+			}
+			
+		});
+	}
 }
