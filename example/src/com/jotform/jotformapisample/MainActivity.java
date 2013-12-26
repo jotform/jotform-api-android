@@ -109,6 +109,8 @@ public class MainActivity extends Activity {
 				
 				if ( SharedData.API_KEY.equals("") ) {
 					showApiKeyError();
+					
+					return;
 				}
 				
 				sharedData.setApiKey(SharedData.API_KEY);
