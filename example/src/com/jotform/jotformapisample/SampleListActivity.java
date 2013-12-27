@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.jotform.jotformapisample.list.CreateFormActivity;
+import com.jotform.jotformapisample.list.CreateQuestionActivity;
 import com.jotform.jotformapisample.list.CreateReportActivity;
 import com.jotform.jotformapisample.list.CreateSubmissionActivity;
 import com.jotform.jotformapisample.list.GetAllFormsActivity;
@@ -17,7 +18,7 @@ import com.jotform.jotformapisample.list.RegisterUserActivity;
 
 public class SampleListActivity extends ListActivity {
 
-	String[] listItems = {"Get all forms", "Get all submissions", "Get all reports", "Create Form", "Create Submission", "Create Report", "Register User"};
+	String[] listItems = {"Get all forms", "Get all submissions", "Get all reports", "Create form", "Create submission", "Create report", "Register user", "Create question"};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,10 @@ public class SampleListActivity extends ListActivity {
 			Intent intent = new Intent(this, RegisterUserActivity.class);
 			startActivity(intent);
 			
+		} else if ( index == 7 ) {
+			
+			Intent intent = new Intent(this, CreateQuestionActivity.class);
+			startActivity(intent);
 		}
 	}
 }
