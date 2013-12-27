@@ -2,6 +2,7 @@ package com.jotform.jotformapisample.list;
 
 import java.util.HashMap;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -79,6 +80,8 @@ public class RegisterUserActivity extends Activity {
 					return;
 				}
 				
+				registerUser(mUsernameEditText.getText().toString(), mEmailEditText.getText().toString(), mPasswordEditText.getText().toString());
+
 			}
 
 		});
@@ -175,6 +178,17 @@ public class RegisterUserActivity extends Activity {
 					e1.printStackTrace();
 				}
 				
+				mProgressDialog.dismiss();
+			}
+			
+			@Override
+			public void onFailure(Throwable e, JSONArray errorResponse) {
+
+				mProgressDialog.dismiss();
+			}
+
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
 				mProgressDialog.dismiss();
 			}
 			
