@@ -38,6 +38,8 @@
         </activity>
         <activity android:name="com.jotform.jotformapisample.list.CreateReportActivity" >
         </activity>
+        <activity android:name="com.jotform.jotformapisample.list.RegisterUserActivity" >
+        </activity>
     </application>
 
 </manifest>

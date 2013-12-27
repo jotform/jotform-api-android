@@ -12,6 +12,7 @@ import com.jotform.jotformapisample.list.CreateReportActivity;
 import com.jotform.jotformapisample.list.CreateSubmissionActivity;
 import com.jotform.jotformapisample.list.GetAllFormsActivity;
 import com.jotform.jotformapisample.list.GetAllSubmissionsActivity;
+import com.jotform.jotformapisample.list.RegisterUserActivity;
 
 public class SampleListActivity extends ListActivity {
 
@@ -59,6 +60,11 @@ public class SampleListActivity extends ListActivity {
 		} else if ( index == 4 ) {
 			
 			Intent intent = new Intent(this, CreateReportActivity.class);
+			startActivity(intent);
+			
+		} else if ( index == 5 ) {
+			
+			Intent intent = new Intent(this, RegisterUserActivity.class);
 			startActivity(intent);
 			
 		}

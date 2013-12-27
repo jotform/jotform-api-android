@@ -74,21 +74,21 @@ public class MainActivity extends Activity {
 
 					return;
 				}
-				
+
 				String username = mUsernameEditText.getText().toString();
 				String password = mPasswordEditText.getText().toString();
 
-				
+
 				getAppKey(username, password);
 			}
 
 		});
-		
+
 		selectOptionDialog();
 	}
-	
+
 	private void selectOptionDialog() {
-		
+
 		final SharedData sharedData = (SharedData) getApplicationContext();
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -97,67 +97,68 @@ public class MainActivity extends Activity {
 		builder.setTitle("JotformAPISample");
 		builder.setMessage("Do you have your Jotform account?");
 		builder.setPositiveButton("Yes, i have", new DialogInterface.OnClickListener() {
-			
+
 			public void onClick(DialogInterface dialog, int item) {
-				
+
 			}
-			
+
 		});
 		builder.setNegativeButton("No, i have an API key", new DialogInterface.OnClickListener() {
-			
+
 			public void onClick(DialogInterface dialog, int item) {
-				
+
 				if ( SharedData.API_KEY.equals("") ) {
 					showApiKeyError();
-					
+
 					return;
 				}
-				
+
 				sharedData.setApiKey(SharedData.API_KEY);
 				sharedData.initApiClient();
 				startSampleListActivity();
 			}
-			
+
 		});
 
 		AlertDialog alert = builder.create();
 		alert.show();
-		
+
 	}
-	
+
 	private void showApiKeyError() {
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 		builder.setCancelable(false);
 		builder.setTitle("JotformAPISample");
 		builder.setMessage("Please put your API key in SharedData.java 9 line.");
 		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			
+
 			public void onClick(DialogInterface dialog, int item) {
 				System.exit(0);
 			}
-			
+
 		});
-		
+
 		builder.show();
 	}
-	
+
 	private void startSampleListActivity() {
-		
+
 		Intent intent = new Intent(this, SampleListActivity.class);
-		
+
 		startActivity(intent);
-		
+
 	}
 
 	private void getAppKey(String username, String password) {
-		
+
 		mProgressDialog = ProgressDialog.show(this, "", "Getting App Key...", true, false);
-		
+
 		final SharedData sharedData = (SharedData) getApplicationContext();
 
 		JotformAPIClient apiClient = new JotformAPIClient();
+		apiClient.setTimeOut(SharedData.TIMEOUT);
 
 		HashMap<String, String> userInfo = new HashMap<String, String>();
 		userInfo.put("username", username);
@@ -169,45 +170,83 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onSuccess(JSONObject loginResponse){
-				
+
 				if ( loginResponse != null ) {
-					
+
 					try {
-						
+
 						int responseCode = loginResponse.getInt("responseCode");
-						
+
 						if ( responseCode == 200 || responseCode == 206 ) {
-							
+
 							JSONObject content = loginResponse.getJSONObject("content");
-							
+
 							sharedData.setApiKey(content.getString("appKey"));
 							sharedData.initApiClient();
-							
+
 							startSampleListActivity();
 						}
-						
+
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-						
+
 				}
-				
+
 				mProgressDialog.dismiss();
 			}
-			
+
 			@Override
 			public void onFailure(Throwable e, JSONArray errorResponse) {
 
 				mProgressDialog.dismiss();
 			}
-			
+
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+
+				mProgressDialog.dismiss();
+
+				// show alert dialog
+				String errMsg;
+
+				try {
+
+					errMsg = errorResponse.getString("errorDetails");
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+					builder.setTitle("JotformAPISample");
+					builder.setCancelable(false);
+					builder.setMessage(errMsg);
+					builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int item) {
+
+						}
+					});
+
+					AlertDialog alert = builder.create();
+					alert.show();
+
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFailure(Throwable e, String response) {
+
+			}
+
 			@Override
 			public void onFinish() {
-				
+
 				mProgressDialog.dismiss();
 			}
-			
+
 		});
 	}
 }

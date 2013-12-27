@@ -9,6 +9,7 @@ import com.jotform.api.JotformAPIClient;
 public class SharedData extends Application {
 	
 	public static final String API_KEY = "";
+	public static final int TIMEOUT = 30000; //miliseconds
 	
 	private CommonInfo				mCommonInfo;
 	private JotformAPIClient		mApiClient;
