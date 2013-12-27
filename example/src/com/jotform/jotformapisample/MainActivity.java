@@ -148,7 +148,7 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(this, SampleListActivity.class);
 
 		startActivity(intent);
-
+		finish();
 	}
 
 	private void getAppKey(String username, String password) {

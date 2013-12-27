@@ -188,7 +188,7 @@ public class RegisterUserActivity extends Activity {
 			}
 
 			@Override
-			public void onFailure(Throwable e, JSONObject errorResponse) {
+			public void onFailure(Throwable e, String errorResponse) {
 				mProgressDialog.dismiss();
 			}
 			
