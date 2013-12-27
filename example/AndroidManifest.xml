@@ -19,26 +19,42 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.jotform.jotformapisample.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.jotform.jotformapisample.SampleListActivity" >
+        <activity
+            android:name="com.jotform.jotformapisample.SampleListActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.jotform.jotformapisample.list.GetAllFormsActivity" >
+        <activity
+            android:name="com.jotform.jotformapisample.list.GetAllFormsActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.jotform.jotformapisample.list.GetAllSubmissionsActivity" >
+        <activity
+            android:name="com.jotform.jotformapisample.list.GetAllSubmissionsActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.jotform.jotformapisample.list.CreateFormActivity" >
+        <activity
+            android:name="com.jotform.jotformapisample.list.CreateFormActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.jotform.jotformapisample.list.CreateSubmissionActivity" >
+        <activity
+            android:name="com.jotform.jotformapisample.list.CreateSubmissionActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.jotform.jotformapisample.list.CreateReportActivity" >
+        <activity
+            android:name="com.jotform.jotformapisample.list.CreateReportActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.jotform.jotformapisample.list.RegisterUserActivity" >
+        <activity
+            android:name="com.jotform.jotformapisample.list.RegisterUserActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
     </application>
 

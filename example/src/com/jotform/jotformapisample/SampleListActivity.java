@@ -16,7 +16,7 @@ import com.jotform.jotformapisample.list.RegisterUserActivity;
 
 public class SampleListActivity extends ListActivity {
 
-	String[] listItems = {"Get all forms", "Get all submissions", "Create Form", "Create Submission", "Create Report"};
+	String[] listItems = {"Get all forms", "Get all submissions", "Create Form", "Create Submission", "Create Report", "Register User"};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
