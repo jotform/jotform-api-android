@@ -70,11 +70,13 @@ public class GetAllReportsActivity extends ListActivity {
 				JSONObject data = mReportArrayList.get(position);
 
 				try {
+					
 					row.getText1().setTextColor(Color.BLACK);
 					row.getText2().setTextColor(Color.DKGRAY);
 
 					row.getText1().setText(data.getString("title"));
 					row.getText2().setText(data.getString("id"));
+					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
