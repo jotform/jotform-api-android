@@ -24,7 +24,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class CreateQuestionActivity extends Activity {
 
 	private Context					mContext;
-	private static final long		FORM_ID = 33444839040453L;
+	private static final long		FORM_ID = 0L;
 	private ProgressDialog			mProgressDialog;
 
 	@Override
@@ -56,6 +56,26 @@ public class CreateQuestionActivity extends Activity {
 
 	private void createQuestion() {
 
+		// check if FORM_ID is specified
+		if ( FORM_ID == 0L ) {
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+			builder.setTitle("JotformAPISample");
+			builder.setCancelable(false);
+			builder.setMessage("Please put Form's id in line 27, CreateQuestionActivity.Java");
+			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int item) {
+
+				}
+			});
+
+			AlertDialog alert = builder.create();
+			alert.show();
+
+			return;
+		}
+
 		// show loading dialog
 		mProgressDialog = ProgressDialog.show(this, "", "Creating question...", true, false);		
 
@@ -63,12 +83,12 @@ public class CreateQuestionActivity extends Activity {
 		SharedData sharedData = (SharedData) getApplicationContext();
 
 		JotformAPIClient apiClient = sharedData.getJotformAPIClient();
-		
+
 		/* 
 			please click the following link to reference fields
 				http://api.jotform.com/docs/properties/index.php
-		*/
-		
+		 */
+
 		HashMap<String, String> question = new HashMap<String, String>();
 		question.put("type", "control_textbox");
 		question.put("text", "New Text");
@@ -151,7 +171,7 @@ public class CreateQuestionActivity extends Activity {
 
 				mProgressDialog.dismiss();
 			}
-			
+
 			@Override
 			public void onFailure(Throwable e, JSONArray errorResponse) {
 

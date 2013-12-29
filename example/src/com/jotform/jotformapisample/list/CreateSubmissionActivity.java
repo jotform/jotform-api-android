@@ -69,7 +69,7 @@ public class CreateSubmissionActivity extends Activity {
 
 			builder.setTitle("JotformAPISample");
 			builder.setCancelable(false);
-			builder.setMessage("Please put Form's id in line 23.");
+			builder.setMessage("Please put Form's id in line 23, CreateSubmissionActivity.java");
 			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int item) {
 
