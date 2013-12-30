@@ -15,10 +15,11 @@ import com.jotform.jotformapisample.list.GetAllFormsActivity;
 import com.jotform.jotformapisample.list.GetAllReportsActivity;
 import com.jotform.jotformapisample.list.GetAllSubmissionsActivity;
 import com.jotform.jotformapisample.list.RegisterUserActivity;
+import com.jotform.jotformapisample.list.UpdateSettingActivity;
 
 public class SampleListActivity extends ListActivity {
 
-	String[] listItems = {"Get all forms", "Get all submissions", "Get all reports", "Create form", "Create submission", "Create report", "Register user", "Create question"};
+	String[] listItems = {"Get all forms", "Get all submissions", "Get all reports", "Create form", "Create submission", "Create report", "Register user", "Create question", "Load & Update setting"};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,12 @@ public class SampleListActivity extends ListActivity {
 			
 			Intent intent = new Intent(this, CreateQuestionActivity.class);
 			startActivity(intent);
+			
+		} else if ( index == 8 ) {
+			
+			Intent intent = new Intent(this, UpdateSettingActivity.class);
+			startActivity(intent);
+			
 		}
 	}
 }

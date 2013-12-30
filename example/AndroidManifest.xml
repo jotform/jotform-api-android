@@ -65,6 +65,11 @@
             android:name="com.jotform.jotformapisample.list.CreateQuestionActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="com.jotform.jotformapisample.list.UpdateSettingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
     </application>
 
 </manifest>

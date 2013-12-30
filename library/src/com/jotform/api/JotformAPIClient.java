@@ -139,6 +139,13 @@ public class JotformAPIClient {
 		post("user/login", params, responseHandler);
 	}
 
+	/**
+	 * Logout user
+	 * @return Returns message 'success' if true
+	 */
+	public void logout(AsyncHttpResponseHandler responseHandler) {
+		get("user/logout", null, responseHandler);
+	}
 
 	/**
 	 * Register with username, password and email
