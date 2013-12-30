@@ -16,9 +16,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.jotform.api.JotformAPIClient;
-import com.jotform.jotformapisample.MainActivity;
 import com.jotform.jotformapisample.R;
 import com.jotform.jotformapisample.model.SharedData;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -32,7 +32,7 @@ public class UpdateSettingActivity extends Activity {
 	private EditText			mCompanyEditText;
 	private EditText			mSecurityQuestionEditText;
 	private EditText			mSecurityAnswerEditText;
-	private EditText			mIndustryEditText;
+	private Spinner				mIndustrySpinner;
 	private ProgressDialog		mProgressDialog;
 	private Context				mContext;
 
@@ -77,9 +77,8 @@ public class UpdateSettingActivity extends Activity {
 		mSecurityQuestionEditText = (EditText) findViewById(R.id.edittext_securityquestion);
 		
 		mSecurityAnswerEditText = (EditText) findViewById(R.id.edittext_securityanswer);
-		
-		mIndustryEditText = (EditText) findViewById(R.id.edittext_industry);
-		
+				
+		mIndustrySpinner = (Spinner) findViewById(R.id.spinner_industry);
 	}
 	
 	private void loadUserSetting() {
@@ -101,8 +100,6 @@ public class UpdateSettingActivity extends Activity {
 
 				try {
 					
-//					{"limit-left":1000,"content":{"time_zone":null,"username":"bestfriend21","updated_at":"2013-12-29 21:28:01","webhooks":"[\"https:\\\/\\\/android.googleapis.com\\\/gcm\\\/send\",\"ssl:\\\/\\\/gateway.sandbox.push.apple.com\"]","status":"ACTIVE","website":null,"email":"best_friend21@hotmail.com","avatarUrl":"http:\/\/www.gravatar.com\/avatar\/498ec06c433c84e4058d311b8a8418c2?s=50&d=identicon","name":null,"usage":"http:\/\/api.jotform.com\/user\/usage","created_at":"2013-06-25 12:31:52","account_type":"http:\/\/api.jotform.com\/system\/plan\/FREE"},"message":"success","responseCode":200}
-
 					// check if result is success or fail
 					responseCode = data.getInt("responseCode");
 
@@ -208,8 +205,14 @@ public class UpdateSettingActivity extends Activity {
 		if ( mSecurityAnswerEditText.getText().length() > 0 )
 			settingInfo.put("securityAnswer", mSecurityAnswerEditText.getText().toString());
 		
+		
+		mIndustrySpinner.getSelectedItem();
+		
+		settingInfo.put("industry", mIndustrySpinner.getSelectedItem().toString());
+		/*
 		if ( mIndustryEditText.getText().length() > 0 )
 			settingInfo.put("industry", mIndustryEditText.getText().toString());
+			*/
 		
 		SharedData sharedData = (SharedData) getApplicationContext();
 		

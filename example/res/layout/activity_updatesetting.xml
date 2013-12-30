@@ -127,11 +127,11 @@
                 android:text="Industry"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <EditText
-                android:id="@+id/edittext_industry"
+            <Spinner
+                android:id="@+id/spinner_industry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10" />
+                android:entries="@array/industry_arrays" />
 
             <Button
                 android:id="@+id/button_updatesettings"
