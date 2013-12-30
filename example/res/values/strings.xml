@@ -4,21 +4,47 @@
     <string name="app_name">JotformAPISample</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-	<string-array name="industry_arrays">
-	    <item>Education</item>
-	    <item>Web Design</item>
-	    <item>Religious</item>
-	    <item>Non-Profit</item>
-	    <item>Event Organizer</item>
-	    <item>Marketing</item>
-	    <item>Web Development</item>
-	    <item>Consultancy</item>
-	    <item>Photography</item>
-	    <item>Social Media</item>
-	    <item>Small Bussiness</item>
-	    <item>Sports</item>
-	    <item>Real Estate</item>
-	    <item>Human Resources</item>
-	    <item>Other</item>
-	</string-array>
+
+    <string-array name="industry_arrays">
+        <item>Education</item>
+        <item>Web Design</item>
+        <item>Religious</item>
+        <item>Non-Profit</item>
+        <item>Event Organizer</item>
+        <item>Marketing</item>
+        <item>Web Development</item>
+        <item>Consultancy</item>
+        <item>Photography</item>
+        <item>Social Media</item>
+        <item>Small Bussiness</item>
+        <item>Sports</item>
+        <item>Real Estate</item>
+        <item>Human Resources</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="historyaction_arrays">
+        <item>all</item>
+        <item>userCreation</item>
+        <item>userLogin</item>
+        <item>formCreation</item>
+        <item>formUpdate</item>
+        <item>formDelete</item>
+        <item>formPurge</item>
+    </string-array>
+    <string-array name="historydate_arrays">
+        <item>lastWeek</item>
+        <item>lastMonth</item>
+        <item>last3Month</item>
+        <item>last6Month</item>
+        <item>lastYear</item>
+        <item>all</item>
+    </string-array>
+	<string-array name="historysort_arrays">
+        <item>lastWeek</item>
+        <item>lastMonth</item>
+        <item>last3Month</item>
+        <item>last6Month</item>
+        <item>lastYear</item>
+        <item>all</item>
+    </string-array>
 </resources>

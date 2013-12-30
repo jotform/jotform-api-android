@@ -63,12 +63,17 @@
         </activity>
         <activity
             android:name="com.jotform.jotformapisample.list.CreateQuestionActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.jotform.jotformapisample.list.UpdateSettingActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name="com.jotform.jotformapisample.list.GetHistoryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
     </application>
 
