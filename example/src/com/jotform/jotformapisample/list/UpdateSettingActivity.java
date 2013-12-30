@@ -1,5 +1,7 @@
 package com.jotform.jotformapisample.list;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,13 +18,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.jotform.api.JotformAPIClient;
+import com.jotform.jotformapisample.MainActivity;
 import com.jotform.jotformapisample.R;
 import com.jotform.jotformapisample.model.SharedData;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class UpdateSettingActivity extends Activity {
 	
-	private Context				mContext;
 	private EditText			mNameEditText;
 	private EditText			mEmailEditText;
 	private EditText			mWebsiteEditText;
@@ -32,6 +34,7 @@ public class UpdateSettingActivity extends Activity {
 	private EditText			mSecurityAnswerEditText;
 	private EditText			mIndustryEditText;
 	private ProgressDialog		mProgressDialog;
+	private Context				mContext;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class UpdateSettingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_updatesetting);
-
+		
 		mContext = this;
 		
 		initUI();
@@ -56,7 +59,7 @@ public class UpdateSettingActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				updateUserSetting();
 			}
 			
 		});
@@ -110,10 +113,7 @@ public class UpdateSettingActivity extends Activity {
 						mNameEditText.setText(content.getString("name"));
 						mEmailEditText.setText(content.getString("email"));
 						mWebsiteEditText.setText(content.getString("website"));
-						mTimezoneEditText.setText(content.getString("time_zone"));
-//						mCompanyEditText.setText(data.getString("company"));
-//						mSecurityQuestionEditText.setText(data.getString("securityquestion"));
-						
+						mTimezoneEditText.setText(content.getString("time_zone"));						
 					}
 
 				} catch (JSONException e) {
@@ -182,6 +182,129 @@ public class UpdateSettingActivity extends Activity {
 	}
 	
 	private void updateUserSetting() {
+	
+		// create setting info to update
 		
+		HashMap<String, String> settingInfo = new HashMap<String, String>();
+		
+		if ( mNameEditText.getText().length() > 0 )
+			settingInfo.put("name", mNameEditText.getText().toString());
+		
+		if ( mEmailEditText.getText().length() > 0 )
+			settingInfo.put("email", mEmailEditText.getText().toString());
+		
+		if ( mWebsiteEditText.getText().length() > 0 )
+			settingInfo.put("website", mWebsiteEditText.getText().toString());
+		
+		if ( mTimezoneEditText.getText().length() > 0 )
+			settingInfo.put("time_zone", mTimezoneEditText.getText().toString());
+		
+		if ( mCompanyEditText.getText().length() > 0 )
+			settingInfo.put("company", mCompanyEditText.getText().toString());
+		
+		if ( mSecurityQuestionEditText.getText().length() > 0 )
+			settingInfo.put("securityQuestion", mSecurityQuestionEditText.getText().toString());
+		
+		if ( mSecurityAnswerEditText.getText().length() > 0 )
+			settingInfo.put("securityAnswer", mSecurityAnswerEditText.getText().toString());
+		
+		if ( mIndustryEditText.getText().length() > 0 )
+			settingInfo.put("industry", mIndustryEditText.getText().toString());
+		
+		SharedData sharedData = (SharedData) getApplicationContext();
+		
+		JotformAPIClient apiClient = sharedData.getJotformAPIClient();
+		
+		apiClient.updateSettings(settingInfo, new JsonHttpResponseHandler(){
+			
+			@Override
+			public void onSuccess(JSONObject loginResponse){
+
+				if ( loginResponse != null ) {
+
+					try {
+
+						int responseCode = loginResponse.getInt("responseCode");
+
+						if ( responseCode == 200 || responseCode == 206 ) {
+
+							// show alert dialog for success
+							AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+							builder.setTitle("JotformAPISample");
+							builder.setCancelable(false);
+							builder.setMessage("You updated setting successfully.");
+							builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int item) {
+
+								}
+							});
+
+							AlertDialog alert = builder.create();
+							alert.show();
+
+						}
+
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+
+				mProgressDialog.dismiss();
+			}
+
+			@Override
+			public void onFailure(Throwable e, JSONArray errorResponse) {
+
+				mProgressDialog.dismiss();
+			}
+
+			@Override
+			public void onFailure(Throwable e, JSONObject errorResponse) {
+
+				mProgressDialog.dismiss();
+
+				// show alert dialog
+				String errMsg;
+
+				try {
+
+					errMsg = errorResponse.getString("errorDetails");
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(UpdateSettingActivity.this);
+
+					builder.setTitle("JotformAPISample");
+					builder.setCancelable(false);
+					builder.setMessage(errMsg);
+					builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int item) {
+
+						}
+					});
+
+					AlertDialog alert = builder.create();
+					alert.show();
+
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFailure(Throwable e, String response) {
+
+			}
+
+			@Override
+			public void onFinish() {
+
+				mProgressDialog.dismiss();
+			}
+			
+		});
 	}
 }

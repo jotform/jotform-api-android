@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
                 android:paddingLeft="10dip"
-                android:text="Full Name"
+                android:text="Timezone"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
