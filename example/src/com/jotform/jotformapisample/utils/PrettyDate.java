@@ -1,6 +1,7 @@
 package com.jotform.jotformapisample.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -75,5 +76,14 @@ public class PrettyDate
 	
 	public static String getDateString(Date date) {	
 		return DATE_FORMATTER.format(date);
+	}
+	
+	public static String getDateFromTimeStamp(long timestamp) {
+		
+		final Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(timestamp);
+		Date date = cal.getTime();
+		
+		return DATE_FORMATTER.format(date);		
 	}
 }

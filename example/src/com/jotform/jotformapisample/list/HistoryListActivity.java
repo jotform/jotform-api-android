@@ -64,8 +64,8 @@ public class HistoryListActivity extends ListActivity {
 					row.getText1().setTextColor(Color.BLACK);
 					row.getText2().setTextColor(Color.DKGRAY);
 
-					row.getText1().setText(data.getString("username"));
-					row.getText2().setText(data.getString("type"));
+					row.getText1().setText("Username : " + data.getString("username"));
+					row.getText2().setText("Type : " + data.getString("type") + "\n" + "TimeStamp : " + data.getString("timestamp"));
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
