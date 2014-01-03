@@ -1,6 +1,5 @@
 package com.jotform.jotformapisample.list;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,10 +12,10 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
@@ -30,8 +29,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class GetHistoryActivity extends Activity implements ICustomDateTimeListener {
 	
-	private ArrayList<JSONObject>		mHistoryArrayList;
-	private ArrayAdapter				mHisotryListAdapter;
 	private Context						mContext;
 	
 	private Spinner						mActionSpinner;
@@ -54,12 +51,7 @@ public class GetHistoryActivity extends Activity implements ICustomDateTimeListe
 		
 		setContentView(R.layout.activity_gethistory);
 		
-		initData();
 		initUI();
-	}
-	
-	private void initData() {
-		mHistoryArrayList = new ArrayList<JSONObject>();
 	}
 	
 	private void initUI() {
@@ -113,6 +105,13 @@ public class GetHistoryActivity extends Activity implements ICustomDateTimeListe
 		});
 	}
 	
+	private void startHistoryListActivity() {
+		
+		Intent intent = new Intent(this, HistoryListActivity.class);
+		
+		startActivity(intent);
+	}
+	
 	private void showTimePicker() {
 		
 		DateTimePicker dateTimePicker = new DateTimePicker(GetHistoryActivity.this, this);
@@ -123,7 +122,9 @@ public class GetHistoryActivity extends Activity implements ICustomDateTimeListe
 	
 	private void loadHistory() {
 		
-		SharedData sharedData = (SharedData) getApplicationContext(); 
+		mProgressDialog = ProgressDialog.show(this, "", "Loading history...", true, false);
+		
+		final SharedData sharedData = (SharedData) getApplicationContext(); 
 		
 		JotformAPIClient apiClient = sharedData.getJotformAPIClient();
 	
@@ -159,13 +160,7 @@ public class GetHistoryActivity extends Activity implements ICustomDateTimeListe
 					
 						JSONArray historyArray = data.getJSONArray("content");
 
-						for ( int i = 0; i < historyArray.length(); i ++ ) {
-
-							JSONObject history = historyArray.getJSONObject(i);
-
-							mHistoryArrayList.add(history);
-						}
-						
+						sharedData.setHistoryArrayList(historyArray);					
 					}
 
 				} catch (JSONException e) {
@@ -174,7 +169,9 @@ public class GetHistoryActivity extends Activity implements ICustomDateTimeListe
 				}
 				
 				// dismiss loading dialog
-				mProgressDialog.dismiss();				
+				mProgressDialog.dismiss();
+				
+				startHistoryListActivity();				
 			}
 			
 			@Override
