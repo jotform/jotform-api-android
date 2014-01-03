@@ -112,11 +112,21 @@ public class JotformAPIClient {
 	private RequestParams createHistoryQuery(String action, String date, String sortBy, String startDate, String endDate) {
 
 		RequestParams args = new RequestParams();
-		args.put("action", action);
-		args.put("date", date);
-		args.put("sortBy", sortBy);
-		args.put("startDate", startDate);
-		args.put("endDate", endDate);
+		
+		if ( action != null )
+			args.put("action", action);
+		
+		if ( date != null )
+			args.put("date", date);
+		
+		if ( sortBy != null )
+			args.put("sortBy", sortBy);
+		
+		if ( startDate != null )
+			args.put("startDate", startDate);
+		
+		if ( endDate != null )
+			args.put("endDate", endDate);
 
 		return args;
 	}

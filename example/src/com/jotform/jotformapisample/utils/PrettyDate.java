@@ -1,5 +1,6 @@
 package com.jotform.jotformapisample.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -8,6 +9,9 @@ import java.util.Date;
  */
 public class PrettyDate
 {
+	private static final SimpleDateFormat DATE_FORMATTER =
+			new SimpleDateFormat("MM/dd/yyyy");
+	
 	private Date date;
 
 	public PrettyDate() {
@@ -67,5 +71,9 @@ public class PrettyDate
 		}
 
 		return amount + what;
+	}
+	
+	public static String getDateString(Date date) {	
+		return DATE_FORMATTER.format(date);
 	}
 }

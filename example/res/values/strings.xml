@@ -40,11 +40,7 @@
         <item>all</item>
     </string-array>
 	<string-array name="historysort_arrays">
-        <item>lastWeek</item>
-        <item>lastMonth</item>
-        <item>last3Month</item>
-        <item>last6Month</item>
-        <item>lastYear</item>
-        <item>all</item>
+        <item>ASC</item>
+        <item>DESC</item>
     </string-array>
 </resources>
