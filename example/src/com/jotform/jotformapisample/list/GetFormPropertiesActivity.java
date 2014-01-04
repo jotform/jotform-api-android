@@ -39,22 +39,12 @@ public class GetFormPropertiesActivity extends Activity {
 		mContext = this;
 		
 		initUI();
+		
+		getFormProperty();		
 	}
 	
 	private void initUI() {
-		
-		Button getFormPropertyButton = (Button) findViewById(R.id.button_getformproperty);
-		
-		getFormPropertyButton.setOnClickListener(new OnClickListener(){
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				getFormProperty();
-			}
-			
-		});
-		
 		mFormPropertyTextView = (TextView) findViewById(R.id.textview_formproperty);
 	}
 	

@@ -1,5 +1,7 @@
 package com.jotform.jotformapisample.list;
 
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -39,7 +41,7 @@ public class CreateFormPropertiesActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				createFormProperties();
 			}
 			
 		});
@@ -51,7 +53,13 @@ public class CreateFormPropertiesActivity extends Activity {
 		
 		JotformAPIClient apiClient = sharedData.getJotformAPIClient();
 		
+		HashMap<String, String> formProperties = new HashMap<String, String>();
+		
+		
 		apiClient.setFormProperties(FORM_ID, formProperties, new JsonHttpResponseHandler(){
+			
+			
+			
 			
 		});
 	}
