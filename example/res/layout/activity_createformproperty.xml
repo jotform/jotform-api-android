@@ -17,7 +17,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
+                android:layout_marginTop="10dip"
                 android:text="thankurl"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -25,6 +25,7 @@
                 android:id="@+id/edittext_thankurl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Optional"
                 android:ems="10" >
 
                 <requestFocus />
@@ -33,19 +34,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
+                android:layout_marginTop="10dip"
                 android:text="activeRedirect"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/spinner_activeredirect"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:entries="@array/formpropertyredirect_arrays" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
+                android:layout_marginTop="10dip"
                 android:text="formWidth"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -53,6 +55,7 @@
                 android:id="@+id/edittext_formWidth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Optional"
                 android:ems="10" >
 
                 <requestFocus />
@@ -61,7 +64,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
+                android:layout_marginTop="10dip"
                 android:text="labelWidth"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -69,6 +72,7 @@
                 android:id="@+id/edittext_labelWidth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Optional"
                 android:ems="10" >
 
                 <requestFocus />
@@ -77,19 +81,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
+                android:layout_marginTop="10dip"
                 android:text="styles"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Spinner
                 android:id="@+id/spinner_styles"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:entries="@array/formpropertystyles_arrays" />
 
             <Button
                 android:id="@+id/button_createformproperty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
                 android:layout_gravity="center_horizontal"
                 android:text="Create form properties" />
         </LinearLayout>

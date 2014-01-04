@@ -22,7 +22,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class GetFormPropertiesActivity extends Activity {
 
-	private static final long				FORM_ID = 33352157794460L;
+	private static final long				FORM_ID = 0L;
 	
 	private Context							mContext;	
 	private ProgressDialog					mProgressDialog;

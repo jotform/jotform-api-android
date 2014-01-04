@@ -43,4 +43,26 @@
         <item>ASC</item>
         <item>DESC</item>
     </string-array>
+    <string-array name="formpropertyredirect_arrays">
+        <item>default</item>
+        <item>thanktext</item>
+        <item>thankurl</item>
+    </string-array>
+    <string-array name="formpropertystyles_arrays">
+        <item>nova</item>
+        <item>form</item>
+        <item>solid</item>
+        <item>big</item>
+        <item>baby_blue</item>
+        <item>industrial_dark</item>
+        <item>jottheme</item>
+        <item>pastel</item>
+        <item>OldPaper</item>
+        <item>Jot Theme</item>
+        <item>paper_grey</item>
+        <item>denimjeans</item>
+        <item>post_it_yellow</item>
+        <item>Default</item>
+        <item>Nova Theme</item>
+    </string-array>
 </resources>
