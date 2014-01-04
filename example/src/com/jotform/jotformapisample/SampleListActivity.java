@@ -14,13 +14,14 @@ import com.jotform.jotformapisample.list.CreateSubmissionActivity;
 import com.jotform.jotformapisample.list.GetAllFormsActivity;
 import com.jotform.jotformapisample.list.GetAllReportsActivity;
 import com.jotform.jotformapisample.list.GetAllSubmissionsActivity;
+import com.jotform.jotformapisample.list.GetFormPropertiesActivity;
 import com.jotform.jotformapisample.list.GetHistoryActivity;
 import com.jotform.jotformapisample.list.RegisterUserActivity;
 import com.jotform.jotformapisample.list.UpdateSettingActivity;
 
 public class SampleListActivity extends ListActivity {
 
-	String[] listItems = {"Get all forms", "Get all submissions", "Get all reports", "Create form", "Create submission", "Create report", "Register user", "Create question", "Load & Update setting", "Get history"};
+	String[] listItems = {"Get all forms", "Get all submissions", "Get all reports", "Create form", "Create submission", "Create report", "Register user", "Create question", "Load & Update setting", "Get history", "Get form properties"};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,11 @@ public class SampleListActivity extends ListActivity {
 			Intent intent = new Intent(this, GetHistoryActivity.class);
 			startActivity(intent);
 
-		} 
+		} else if ( index == 10 ) {
+			
+			Intent intent = new Intent(this, GetFormPropertiesActivity.class);
+			startActivity(intent);
+			
+		}
 	}
 }
