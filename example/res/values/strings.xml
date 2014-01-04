@@ -65,4 +65,15 @@
         <item>Default</item>
         <item>Nova Theme</item>
     </string-array>
+    <string-array name="submissionorderby_arrays">
+        <item>id</item>
+        <item>username</item>
+        <item>title</item>
+        <item>status</item>
+        <item>created_at</item>
+        <item>updated_at</item>
+        <item>new</item>
+        <item>count</item>
+        <item>slug</item>
+    </string-array>
 </resources>

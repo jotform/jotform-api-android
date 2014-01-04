@@ -20,10 +20,12 @@ public class SharedData extends Application {
 	private CommonInfo				mCommonInfo;
 	private JotformAPIClient		mApiClient;
 	private ArrayList<JSONObject>	mHistoryList;
+	private ArrayList<JSONObject>	mSubmissionList;
 	
 	public SharedData() {
 		mCommonInfo = new CommonInfo();
 		mHistoryList = new ArrayList<JSONObject>();
+		mSubmissionList = new ArrayList<JSONObject>();
 	}
 	
 	public void setApiKey( String apiKey ) {
@@ -90,6 +92,30 @@ public class SharedData extends Application {
 		
 		return mHistoryList;
 	}
-
 	
+	public void setSubmissionArrayList( JSONArray submissionList ) {
+		
+		mSubmissionList.clear();
+
+		for ( int i = 0; i < submissionList.length(); i ++ ) {
+
+			JSONObject history;
+			
+			try {
+				
+				history = submissionList.getJSONObject(i);
+				mSubmissionList.add(history);
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
+	public ArrayList<JSONObject> getSubmissionArrayList() {
+		
+		return mSubmissionList;
+	}
 }

@@ -1,112 +1,97 @@
 package com.jotform.jotformapisample.list;
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TwoLineListItem;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.jotform.api.JotformAPIClient;
 import com.jotform.jotformapisample.R;
 import com.jotform.jotformapisample.model.SharedData;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class GetAllSubmissionsActivity extends ListActivity {
+public class GetAllSubmissionsActivity extends Activity {
 
 	private static final int		SUBMISSION_LIMIT_COUNT = 50;
 
 	private ProgressDialog			mProgressDialog;
-	private ArrayList<JSONObject>	mSubmissionArrayList;
-	private ArrayAdapter<?>			mSubmissionListAdapter;
+	private EditText				mOffsetEditText;
+	private EditText				mLimitEditText;
+	private Spinner					mOrderbySpinner;
+	private EditText				mFilterEditText;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_samplelist);
-		
-		initData();
+		setContentView(R.layout.activity_getsubmissions);
+
 		initUI();
-		
-		getAllSubmissions();
-	}
-	
-	private void initData() {
-		
-		mSubmissionArrayList = new ArrayList<JSONObject>();
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void initUI() {
+		
+		mOffsetEditText = (EditText) findViewById(R.id.edittext_offset);
+		mLimitEditText = (EditText) findViewById(R.id.edittext_limit);
+		mOrderbySpinner = (Spinner) findViewById(R.id.spinner_orderby);
+		mFilterEditText = (EditText) findViewById(R.id.edittext_filter);
+		
+		Button getSubmissionButton = (Button) findViewById(R.id.button_getsubmissions);
+		getSubmissionButton.setOnClickListener(new OnClickListener(){
 
-		mSubmissionListAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_2, mSubmissionArrayList){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getAllSubmissions();
+			}
 			
-	        @Override
-	        public View getView(int position, View convertView, ViewGroup parent){
-	        	
-	            TwoLineListItem row;
-	            
-	            if( convertView == null ) {
-	            	
-	                LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	                row = (TwoLineListItem)inflater.inflate(android.R.layout.simple_list_item_2, null);
-	                
-	            } else {
-	            	
-	                row = (TwoLineListItem)convertView;
-	            }
-	            
-	            JSONObject data = mSubmissionArrayList.get(position);
-	            try {
-	            	row.getText1().setTextColor(Color.BLACK);
-	            	row.getText2().setTextColor(Color.DKGRAY);
-	            	
-					row.getText1().setText(data.getString("created_at"));
-		            row.getText2().setText(data.getString("answers"));
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	 
-	            return row;
-	        }
-	    };
+		});
 		
-		setListAdapter(mSubmissionListAdapter);
-	}
-	
-	private void updateFormsList() {
-		
-		mSubmissionListAdapter.notifyDataSetChanged();
+		mOffsetEditText.setText("20");
+		mLimitEditText.setText("100");
+		mFilterEditText.setText("2013-01-01 00:00:00");
 	}
 	
 	private void getAllSubmissions() {
 		
 		mProgressDialog = ProgressDialog.show(this, "", "Loading submissions...", true, false);
 		
-		SharedData sharedData = (SharedData) getApplicationContext();
+		final SharedData sharedData = (SharedData) getApplicationContext();
  		
 		JotformAPIClient apiClient = sharedData.getJotformAPIClient();
 		
-		JSONObject filter = new JSONObject();
+		JSONObject filter = null;
 		
 		try {
 			
-			filter.put("created_at:gt", "2013-01-01 00:00:00");
+			Integer limitCount = null;
 			
-			apiClient.getSubmissions(SUBMISSION_LIMIT_COUNT, "created_at", filter, new JsonHttpResponseHandler() {
+			if ( mLimitEditText.getText().length() > 0 )
+				limitCount = Integer.parseInt(mLimitEditText.getText().toString());
+			else
+				limitCount = SUBMISSION_LIMIT_COUNT;
+			
+			String orderBy = mOrderbySpinner.getSelectedItem().toString();
+
+			if ( mFilterEditText.getText().length() > 0 ) {
+				
+				filter = new JSONObject();
+				filter.put("created_at:gt", mFilterEditText.getText().toString());
+				
+			}
+			
+			apiClient.getSubmissions(limitCount, orderBy, filter, new JsonHttpResponseHandler() {
 				
 				@Override
 				public void onSuccess(JSONObject submissionsResponse){
@@ -119,16 +104,11 @@ public class GetAllSubmissionsActivity extends ListActivity {
 							
 							if ( responseCode == 200 || responseCode == 206 ) {
 								
-								JSONArray forms = submissionsResponse.getJSONArray("content");
+								JSONArray submissions = submissionsResponse.getJSONArray("content");
 
-								for ( int i = 0; i < forms.length(); i ++ ) {
-									
-									JSONObject submission = forms.getJSONObject(i);
-									
-									mSubmissionArrayList.add(submission);
-								}
+								sharedData.setSubmissionArrayList(submissions);
 								
-								updateFormsList();
+								startSubmissionListActivity();
 							}
 							
 						} catch (JSONException e) {
@@ -154,5 +134,12 @@ public class GetAllSubmissionsActivity extends ListActivity {
 			e1.printStackTrace();
 		}
         
+	}
+	
+	private void startSubmissionListActivity() {
+		
+		Intent intent = new Intent(this, SubmissionListActivity.class);
+		startActivity(intent);
+		
 	}
 }
