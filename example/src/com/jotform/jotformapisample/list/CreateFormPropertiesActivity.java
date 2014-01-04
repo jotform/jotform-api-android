@@ -24,9 +24,9 @@ import com.jotform.jotformapisample.model.SharedData;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class CreateFormPropertiesActivity extends Activity {
-	
+
 	private static final long FORM_ID = 0L;
-	
+
 	private Spinner				mActiveRedirectSpinner;
 	private EditText			mThankUrlEditText;
 	private EditText			mFormWidthEditText;
@@ -41,21 +41,21 @@ public class CreateFormPropertiesActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_createformproperty);
-		
+
 		mContext = this;
-		
+
 		initData();
 		initUI();
 	}
-	
+
 	private void initData() {
-		
+
 	}
-	
+
 	private void initUI() {
-		
+
 		Button createFormPropertiesButton = (Button) findViewById(R.id.button_createformproperty);
-		
+
 		createFormPropertiesButton.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -63,42 +63,62 @@ public class CreateFormPropertiesActivity extends Activity {
 				// TODO Auto-generated method stub
 				createFormProperties();
 			}
-			
+
 		});
-		
+
 		mActiveRedirectSpinner = (Spinner) findViewById(R.id.spinner_activeredirect);
-		
+
 		mThankUrlEditText = (EditText) findViewById(R.id.edittext_thankurl);
 		mFormWidthEditText = (EditText) findViewById(R.id.edittext_formWidth);
 		mLabelWidthEditText = (EditText) findViewById(R.id.edittext_labelWidth);
-		
+
 		mStylesSpinner = (Spinner) findViewById(R.id.spinner_styles);
 	}
-	
+
 	private void createFormProperties() {
-	
+
+		// check if FORM_ID is specified
+		if ( FORM_ID == 0L ) {
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+			builder.setTitle("JotformAPISample");
+			builder.setCancelable(false);
+			builder.setMessage("Please put Form's id in line 28, CreateFormPropertiesActivity.java");
+			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int item) {
+
+				}
+			});
+
+			AlertDialog alert = builder.create();
+			alert.show();
+
+			return;
+		}
+
 		mProgressDialog = ProgressDialog.show(this, "", "Creating form properties...", true, false);
-		
+
 		SharedData sharedData = (SharedData) getApplicationContext();
-		
+
 		JotformAPIClient apiClient = sharedData.getJotformAPIClient();
-		
+
 		HashMap<String, String> formProperties = new HashMap<String, String>();
-		
+
 		if ( mThankUrlEditText.getText().length() > 0 )
 			formProperties.put("thankurl", mThankUrlEditText.getText().toString());
-		
+
 		if ( mFormWidthEditText.getText().length() > 0 )
 			formProperties.put("formWidth", mFormWidthEditText.getText().toString());
-		
+
 		if ( mLabelWidthEditText.getText().length() > 0 )
 			formProperties.put("labelWidth", mLabelWidthEditText.getText().toString());
-		
+
 		formProperties.put("activeRedirect", mActiveRedirectSpinner.getSelectedItem().toString());
 		formProperties.put("styles", mStylesSpinner.getSelectedItem().toString());
-		
+
 		apiClient.setFormProperties(FORM_ID, formProperties, new JsonHttpResponseHandler(){
-			
+
 			@Override
 			public void onSuccess(JSONObject data) {
 
@@ -110,7 +130,7 @@ public class CreateFormPropertiesActivity extends Activity {
 					responseCode = data.getInt("responseCode");
 
 					if ( responseCode == 200 || responseCode == 206 ) {
-						
+
 						// show alert dialog for success
 						AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
@@ -125,7 +145,7 @@ public class CreateFormPropertiesActivity extends Activity {
 
 						AlertDialog alert = builder.create();
 						alert.show();
-						
+
 					}
 
 				} catch (JSONException e) {
@@ -185,8 +205,8 @@ public class CreateFormPropertiesActivity extends Activity {
 
 				mProgressDialog.dismiss();
 			}
-			
+
 		});
 	}
-	
+
 }

@@ -23,41 +23,61 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 public class GetFormPropertiesActivity extends Activity {
 
 	private static final long				FORM_ID = 0L;
-	
+
 	private Context							mContext;	
 	private ProgressDialog					mProgressDialog;
 	private TextView						mFormPropertyTextView;
-	
-	
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_getformproperty);
-		
+
 		mContext = this;
-		
+
 		initUI();
-		
+
 		getFormProperty();		
 	}
-	
+
 	private void initUI() {
 
 		mFormPropertyTextView = (TextView) findViewById(R.id.textview_formproperty);
 	}
-	
+
 	private void getFormProperty() {
-		
+
+		// check if FORM_ID is specified
+		if ( FORM_ID == 0L ) {
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+			builder.setTitle("JotformAPISample");
+			builder.setCancelable(false);
+			builder.setMessage("Please put Form's id in line 25, GetFormPropertiesActivity.java");
+			builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int item) {
+
+				}
+			});
+
+			AlertDialog alert = builder.create();
+			alert.show();
+
+			return;
+		}
+
 		mProgressDialog = ProgressDialog.show(this, "", "Loading form properties...", true, false);
-		
+
 		SharedData sharedData = (SharedData) getApplicationContext();
-		
+
 		JotformAPIClient apiClient = sharedData.getJotformAPIClient();
-		
+
 		apiClient.getFormProperties(FORM_ID, new JsonHttpResponseHandler(){
-			
+
 			@Override
 			public void onSuccess(JSONObject data) {
 
@@ -131,8 +151,8 @@ public class GetFormPropertiesActivity extends Activity {
 
 				mProgressDialog.dismiss();
 			}
-			
+
 		});
-		
+
 	}
 }
