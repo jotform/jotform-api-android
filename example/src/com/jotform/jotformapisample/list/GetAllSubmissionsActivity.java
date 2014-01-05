@@ -58,7 +58,7 @@ public class GetAllSubmissionsActivity extends Activity {
 			
 		});
 		
-		mOffsetEditText.setText("20");
+		mOffsetEditText.setText("0");
 		mLimitEditText.setText("100");
 		mFilterEditText.setText("2013-01-01 00:00:00");
 	}
@@ -74,6 +74,11 @@ public class GetAllSubmissionsActivity extends Activity {
 		JSONObject filter = null;
 		
 		try {
+			
+			Integer offset = null;
+			
+			if ( mOffsetEditText.getText().length() > 0 )
+				offset = Integer.parseInt(mOffsetEditText.getText().toString());
 			
 			Integer limitCount = null;
 			
@@ -91,8 +96,7 @@ public class GetAllSubmissionsActivity extends Activity {
 				
 			}
 			
-			/*
-			apiClient.getSubmissions(limitCount, orderBy, filter, new JsonHttpResponseHandler() {
+			apiClient.getSubmissions(offset, limitCount, orderBy, filter, new JsonHttpResponseHandler() {
 				
 				@Override
 				public void onSuccess(JSONObject submissionsResponse){
@@ -129,7 +133,6 @@ public class GetAllSubmissionsActivity extends Activity {
 				}
 				
 			});
-			*/
 			
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
