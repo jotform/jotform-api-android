@@ -65,10 +65,10 @@ public class JotformAPIClient {
 	public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 
 		client.addHeader("apiKey", apiKey);
-		
+
 		if ( timeout > 0 )
 			client.setTimeout(timeout);
-		
+
 		client.get(getAbsoluteUrl(url), params, responseHandler);
 	}
 
@@ -112,19 +112,19 @@ public class JotformAPIClient {
 	private RequestParams createHistoryQuery(String action, String date, String sortBy, String startDate, String endDate) {
 
 		RequestParams args = new RequestParams();
-		
+
 		if ( action != null )
 			args.put("action", action);
-		
+
 		if ( date != null )
 			args.put("date", date);
-		
+
 		if ( sortBy != null )
 			args.put("sortBy", sortBy);
-		
+
 		if ( startDate != null )
 			args.put("startDate", startDate);
-		
+
 		if ( endDate != null )
 			args.put("endDate", endDate);
 
@@ -223,12 +223,17 @@ public class JotformAPIClient {
 	}
 
 	public void getSubmissions(
+			Integer offset,
 			Integer limit,
 			String orderBy,
 			JSONObject filter,
 			AsyncHttpResponseHandler responseHandler){
 
 		RequestParams params = new RequestParams();
+
+		if (offset != null) {
+			params.put("offset", String.valueOf(offset));
+		}
 
 		if (limit != null) {
 			params.put("limit", String.valueOf(limit));
@@ -253,6 +258,7 @@ public class JotformAPIClient {
 		if (filter != null) {
 
 			Iterator<String> keys = filter.keys();
+
 			while (keys.hasNext()) {
 
 				String key = keys.next();
@@ -284,6 +290,7 @@ public class JotformAPIClient {
 
 	public void getFormSubmissions(
 			long formId,
+			Integer offset,
 			Integer limit,
 			String orderBy,
 			JSONObject filter,
@@ -295,7 +302,7 @@ public class JotformAPIClient {
 
 		}
 
-		getSubmissions(limit, orderBy, filter, responseHandler);
+		getSubmissions(offset, limit, orderBy, filter, responseHandler);
 	}
 
 	/**
@@ -349,7 +356,7 @@ public class JotformAPIClient {
 
 		get("user/reports", null, responseHandler);
 	}
-	
+
 	/**
 	 * Create new report of a form with intended fields, type and title.
 	 * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
@@ -358,9 +365,9 @@ public class JotformAPIClient {
 	 * @fields you can specify fields, User IP, submission date(dt) and question IDs
 	 * @return Report details and URL.
 	 */
-	
+
 	public void createReport(long formId, String title, String list_type, String fields, AsyncHttpResponseHandler responseHandler) {
-		
+
 		RequestParams params = new RequestParams();
 
 		params.put("title", title);
@@ -817,7 +824,7 @@ public class JotformAPIClient {
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

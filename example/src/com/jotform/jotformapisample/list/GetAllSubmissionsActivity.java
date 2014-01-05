@@ -91,6 +91,7 @@ public class GetAllSubmissionsActivity extends Activity {
 				
 			}
 			
+			/*
 			apiClient.getSubmissions(limitCount, orderBy, filter, new JsonHttpResponseHandler() {
 				
 				@Override
@@ -128,6 +129,7 @@ public class GetAllSubmissionsActivity extends Activity {
 				}
 				
 			});
+			*/
 			
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
