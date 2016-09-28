@@ -1,7 +1,7 @@
 Updates
 ------------
 
-# 28.10.2016 -- EU Server API Support Intagrated
+#####28.10.2016 - EU Server API Support Intagrated
 If your user is in eu protected mode, now you can use JotForm EU Server API
 
 Installation
