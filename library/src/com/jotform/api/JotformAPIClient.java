@@ -37,27 +37,42 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 public class JotformAPIClient {
 
-	private static final String BASE_URL = "http://api.jotform.com/";
+	private static String BASE_URL = "";
+	private static final String EU_API_URL = "http://eu-api.jotform.com/";
+	private static final String API_URL = "http://api.jotform.com/";
 	private static final String VERSION = "v1/";
 	private AsyncHttpClient client;
 	private String apiKey;
 	private int timeout;
-
+	
 	public static final String TAG = "Jotform API Client";
 
+	public JotformAPIClient(String apiKey, Boolean euOnly){
+		_init(apiKey,euOnly);
+	}
+	
 	public JotformAPIClient(String apiKey) {
-		client = new AsyncHttpClient();
-		this.apiKey = apiKey;
+		_init(apiKey,false);
+
 	}
 
 	public JotformAPIClient() {
-		client = new AsyncHttpClient();
-		this.apiKey = "";
+		_init("",false);
 	}
-
+	
+	private void _init(String apiKey, Boolean euOnly){
+		client = new AsyncHttpClient();
+		this.apiKey = apiKey;
+		if(euOnly){
+			this.BASE_URL = this.EU_API_URL;
+		}
+		else{
+			this.BASE_URL = this.API_URL;
+		}
+	}
+	
 	public void setTimeOut(int miliseconds) {
 		timeout = miliseconds;
 	}
