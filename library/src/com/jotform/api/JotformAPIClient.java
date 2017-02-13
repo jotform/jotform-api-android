@@ -40,8 +40,8 @@ import com.loopj.android.http.RequestParams;
 public class JotformAPIClient {
 
 	private static String BASE_URL = "";
-	private static final String EU_API_URL = "http://eu-api.jotform.com/";
-	private static final String API_URL = "http://api.jotform.com/";
+	private static final String EU_API_URL = "https://eu-api.jotform.com/";
+	private static final String API_URL = "https://api.jotform.com/";
 	private static final String VERSION = "v1/";
 	private AsyncHttpClient client;
 	private String apiKey;
